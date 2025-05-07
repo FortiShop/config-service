@@ -1,0 +1,49 @@
+server:
+  port: 8888
+  tomcat:
+    connection-timeout: 2s
+    keep-alive-timeout: 15s
+    threads:
+      max: 50
+      min-spare: 5
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native, vault
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+  cloud:
+    config:
+      server:
+        vault:
+          order: 1
+          host: ${VAULT_HOST}
+          port: ${VAULT_PORT}
+          token: ${VAULT_TOKEN}
+          authentication: token
+          kv-version: 2
+          backend: config-service-secret
+          profile-separator: '/'
+          scheme: http
+        native:
+          search-locations: ${NATIVE_LOCATION}
+
+#        git:
+#          uri:
+#          search-paths:
+#            - '{application}'
+#          default-label: main
+#          timeout: 5
+#          clone-on-start: true
+#          force-pull: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, bus-refresh
