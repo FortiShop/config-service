@@ -11,7 +11,7 @@ spring:
   application:
     name: config-service
   profiles:
-    active: native, vault
+    active: git, vault
   rabbitmq:
     host: ${RABBITMQ_HOST}
     port: ${RABBITMQ_PORT}
@@ -30,17 +30,16 @@ spring:
           backend: config-service-secret
           profile-separator: '/'
           scheme: http
-        native:
-          search-locations: ${NATIVE_LOCATION}
-
-#        git:
-#          uri:
-#          search-paths:
-#            - '{application}'
-#          default-label: main
-#          timeout: 5
-#          clone-on-start: true
-#          force-pull: true
+        #        native:
+        #          search-locations: ${NATIVE_LOCATION}
+        git:
+          uri: https://github.com/FortiShop/config-repo
+          search-paths:
+            - '{application}'
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
 
 management:
   endpoints:
